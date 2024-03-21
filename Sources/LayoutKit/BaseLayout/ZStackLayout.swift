@@ -1,8 +1,8 @@
 import UIKit
 
-public struct ZStackLayout: Layout {
+public struct ZStackLayout: ZLayout {
     let alignment: Alignment
-    private let sizeTable = Ref([UIView: CGSize]())
+    let sizeTable = Ref([UIView: CGSize]())
     
     public init(alignment: Alignment = .center) {
         self.alignment = alignment
@@ -25,34 +25,5 @@ public struct ZStackLayout: Layout {
         subviews.forEach(
             place(in: rect)
         )
-    }
-    
-    private func place(in rect: CGRect) -> (UIView) -> Void {
-        return { view in
-            let viewSize = sizeTable.value[view] ?? .zero
-            
-            let x = switch alignment.vertical {
-            case .left:
-                CGFloat.zero
-            case .right:
-                rect.width - viewSize.width
-            case .center:
-                (rect.width - viewSize.width) / 2
-            }
-            
-            let y = switch alignment.horizontal {
-            case .top:
-                CGFloat.zero
-            case .bottom:
-                rect.height - viewSize.height
-            case .center:
-                (rect.height - viewSize.height) / 2
-            }
-            
-            view.frame = CGRect(
-                origin: CGPoint(x: x, y: y),
-                size: viewSize
-            )
-        }
     }
 }
