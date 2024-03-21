@@ -8,4 +8,10 @@ public extension WithObject {
         block(self)
         return self
     }
+    
+    func with<Member>(_ keyPath: ReferenceWritableKeyPath<Self, Member>, _ value: Member) -> Self {
+        with {
+            $0[keyPath: keyPath] = value
+        }
+    }
 }
