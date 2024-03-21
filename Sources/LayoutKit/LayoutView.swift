@@ -23,7 +23,10 @@ public final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
 
 public extension UIView {
     func layoutPriority(_ priority: Double) -> UIView {
-        LayoutView(FillLayout(), priority: .init(priority))
+        LayoutView(WrapLayout(view: self), priority: .init(priority))
+            .with {
+                $0.addSubview(self)
+            }
     }
 }
 

@@ -1,11 +1,15 @@
 import UIKit
 
-struct FillLayout: Layout {
+struct WrapLayout: Layout {
+    let view: UIView
+    
     func sizeThatFit(size: CGSize, subviews: [UIView]) -> CGSize {
-        size
+        view.sizeThatFits(size)
     }
     
     func placeSubviews(_ subviews: [UIView], in rect: CGRect) {
-        subviews.first?.frame = rect
+        subviews.forEach {
+            $0.frame = rect
+        }
     }
 }
