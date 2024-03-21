@@ -6,9 +6,11 @@ public protocol Layout {
 }
 
 extension Layout {
-    func callAsFunction(_ content: () -> UIView) -> UIView {
+    func callAsFunction(@ViewBuilder _ content: () -> [UIView]) -> UIView {
         let layoutView = LayoutView(self)
-        layoutView.addSubview(content())
+        content().forEach(
+            layoutView.addSubview
+        )
         return layoutView
     }
 }
