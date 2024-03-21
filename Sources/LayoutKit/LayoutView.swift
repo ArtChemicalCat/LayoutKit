@@ -1,8 +1,8 @@
 import UIKit
 
-final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
+public final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
     
-    let priority: LayoutPriority
+    public var priority: LayoutPriority
     
     private let layout: L
     
@@ -12,17 +12,23 @@ final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
         super.init()
     }
     
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
+    public override func sizeThatFits(_ size: CGSize) -> CGSize {
         layout.sizeThatFit(size: size, subviews: subviews)
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         layout.placeSubviews(subviews, in: bounds)
     }
 }
 
-class BaseView: UIView {
-    init() {
+public extension UIView {
+    func layoutPriority(_ priority: Double) -> UIView {
+        LayoutView(FillLayout(), priority: .init(priority))
+    }
+}
+
+public class BaseView: UIView {
+    public init() {
         super.init(frame: .zero)
     }
     

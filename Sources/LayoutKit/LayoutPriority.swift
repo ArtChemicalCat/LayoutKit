@@ -21,3 +21,21 @@ public struct LayoutPriority: ExpressibleByFloatLiteral {
 public protocol WithLayoutPriority {
     var priority: LayoutPriority { get }
 }
+
+extension UIView {
+    var layoutPriority: Double {
+        (self as? WithLayoutPriority)?.priority.value ?? .zero
+    }
+}
+
+extension UILabel: WithLayoutPriority {
+    public var priority: LayoutPriority {
+        .hight
+    }
+}
+
+extension UIImageView: WithLayoutPriority {
+    public var priority: LayoutPriority {
+        .max
+    }
+}

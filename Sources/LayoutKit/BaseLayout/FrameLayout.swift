@@ -44,7 +44,7 @@ struct FrameLayout: Layout {
 
 public extension UIView {
     func frame(width: CGFloat? = nil, height: CGFloat? = nil, alignment: Alignment = .center) -> UIView {
-        FrameLayout(width: width, height: height, alignment: alignment) {
+        FrameLayout(width: width, height: height, alignment: alignment)(priority: .max) {
             self
         }
     }

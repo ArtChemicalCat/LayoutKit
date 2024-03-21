@@ -2,19 +2,29 @@ import UIKit.UIView
 
 @resultBuilder
 public struct ViewBuilder {
-    public static func buildPartialBlock<V: UIView>(first: V) -> [V] {
+    public typealias Component = UIView
+    
+    public static func buildPartialBlock(first: Component) -> [Component] {
         [first]
     }
     
-    public static func buildPartialBlock<V: UIView>(first: [V]) -> [V] {
+    public static func buildPartialBlock(first: [Component]) -> [Component] {
         first
     }
     
-    public static func buildPartialBlock<V: UIView>(accumulated: [V], next: V) -> [V] {
+    public static func buildPartialBlock(accumulated: [Component], next: Component) -> [Component] {
         accumulated + [next]
     }
     
-    public static func buildPartialBlock<V: UIView>(accumulated: [V], next: [V]) -> [V] {
+    public static func buildPartialBlock(accumulated: [Component], next: [Component]) -> [Component] {
         accumulated + next
+    }
+
+    public static func buildExpression(_ expression: Component) -> [Component] {
+        [expression]
+    }
+
+    public static func buildExpression(_ expression: [Component]) -> [Component] {
+        expression
     }
 }
