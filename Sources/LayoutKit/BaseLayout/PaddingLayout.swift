@@ -96,7 +96,6 @@ public extension UIEdgeInsets {
     }
     
     func bottom(_ inset: CGFloat) -> Self {
-        print(self)
-        return UIEdgeInsets(top: top, left: left, bottom: inset, right: right)
+        UIEdgeInsets(top: top, left: left, bottom: inset, right: right)
     }
 }
