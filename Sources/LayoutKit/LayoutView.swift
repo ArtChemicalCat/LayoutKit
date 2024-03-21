@@ -1,10 +1,14 @@
 import UIKit
 
-final class LayoutView<L: Layout>: BaseView {
+final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
+    
+    let priority: LayoutPriority
+    
     private let layout: L
     
-    init(_ layout: L) {
+    init(_ layout: L, priority: LayoutPriority = .min) {
         self.layout = layout
+        self.priority = priority
         super.init()
     }
     
