@@ -18,6 +18,7 @@ open class Controller: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         let contentView = contentView
         _contentView = contentView
         view.addSubview(contentView)
