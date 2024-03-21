@@ -7,10 +7,13 @@ public protocol Layout {
 
 public extension Layout {
     func callAsFunction(@ViewBuilder _ content: () -> [UIView]) -> UIView {
+        var priority: Double = 0
         let layoutView = LayoutView(self)
-        content().forEach(
-            layoutView.addSubview
-        )
+        content().forEach {
+            priority = max(priority, $0.layoutPriority)
+            layoutView.addSubview($0)
+        }
+        layoutView.priority = .init(priority)
         return layoutView
     }
     
