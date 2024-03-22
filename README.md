@@ -14,3 +14,18 @@ final class MyController: Controller {
     }
 }
 ```
+
+You can declare view hierarchy inline, and, if needed assign some views to property for later use:
+
+```
+var label: UILabel!
+
+override var body: UIView {
+    UILabel()
+        .textStyle(.largeTitle)
+        .assigne(to: &label)
+}
+
+label.text = "Title"
+
+```
