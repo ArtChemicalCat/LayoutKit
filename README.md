@@ -1,9 +1,9 @@
 # Frame based SwiftUI like layout system
 
 ## Features:
-* VSTackLayout
-* HSTackLayout
-* ZSTackLayout
+* VStackLayout
+* HStackLayout
+* ZStackLayout
 * ScrollView
 * Frame
 * Padding
