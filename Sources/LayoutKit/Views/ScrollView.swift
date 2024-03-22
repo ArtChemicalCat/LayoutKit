@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 public final class ScrollView: UIScrollView {
     public enum Axis {
@@ -9,6 +10,7 @@ public final class ScrollView: UIScrollView {
     let axis: Axis
     let contentView: UIView
     
+    private var subscriptions = Set<AnyCancellable>()
     
     public init(_ axis: Axis = .vertical, alignment: Alignment = .center, spacing: CGFloat = 8, @ViewBuilder contentView: () -> [UIView]) {
         switch axis {
@@ -20,6 +22,29 @@ public final class ScrollView: UIScrollView {
         self.axis = axis
         super.init(frame: .zero)
         addSubview(self.contentView)
+        keyboardDismissMode = .onDrag
+        alwaysBounceVertical = true
+        
+        KeyboardPublisher
+            .observeKeyboardFrame()
+            .removeDuplicates()
+            .sink { [unowned self] frame in
+                guard let rootView = controllerRootView() else {
+                    return
+                }
+                
+                guard frame.height > 0 else {
+                    contentInset.bottom = .zero
+                    invalidateLayout()
+                    return
+                }
+                
+                let converted = convert(self.frame, to: rootView)
+                let overlappedHeight = self.frame.height - (frame.origin.y - converted.origin.y)
+                contentInset.bottom = overlappedHeight
+                invalidateLayout()
+            }
+            .store(in: &subscriptions)
     }
     
     public required init?(coder: NSCoder) {
@@ -27,18 +52,39 @@ public final class ScrollView: UIScrollView {
     }
     
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        size
-    }
-    
-    public override func layoutSubviews() {
         contentSize = contentView.sizeThatFits(
             CGSize(
-                width: axis == .vertical ? bounds.width : .infinity,
-                height: axis == .horizontal ? bounds.height : .infinity
+                width: axis == .vertical ? size.width : .infinity,
+                height: axis == .horizontal ? size.height : .infinity
             )
         )
         
-        contentView.frame.size = contentSize
+        return CGSize(
+            width: min(contentSize.width, size.width),
+            height: min(contentSize.height + contentInset.bottom, size.height)
+        )
+    }
+    
+    public override func layoutSubviews() {
+        contentView.frame.size = CGSize(
+            width: contentSize.width,
+            height: contentSize.height + contentInset.bottom
+        )
         contentView.frame.origin = .zero
+    }
+}
+
+enum KeyboardPublisher {
+    private static let keyboardWillShow = NotificationCenter.default
+        .publisher(for: UIApplication.keyboardWillShowNotification)
+        .map { ($0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero }
+    
+    private static let keyboardWillHide = NotificationCenter.default
+        .publisher(for: UIApplication.keyboardWillHideNotification)
+        .map { _ in CGRect.zero }
+    
+    static func observeKeyboardFrame() -> some Publisher<CGRect, Never> {
+        Publishers.MergeMany(keyboardWillHide, keyboardWillShow)
+            .removeDuplicates()
     }
 }
