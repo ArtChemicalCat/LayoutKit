@@ -13,16 +13,13 @@ let package = Package(
             targets: ["LayoutKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ArtChemicalCat/DeclarativeUIKit.git", exact: Version(1, 0, 0))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "LayoutKit",
-            dependencies: [
-                .product(name: "DeclarativeUIKit", package: "DeclarativeUIKit")
-            ]
+            dependencies: []
         ),
         .testTarget(
             name: "LayoutKitTests",
