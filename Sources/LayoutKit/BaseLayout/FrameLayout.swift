@@ -39,15 +39,6 @@ struct FrameLayout: Layout {
     func sizeThatFit(size: CGSize, subviews: [UIView]) -> CGSize {
         guard let view = subviews.first else { return .zero }
         
-        if height != nil || width != nil {
-            return view.sizeThatFits(
-                CGSize(
-                    width: width ?? size.width,
-                    height: height ?? size.height
-                )
-            )
-        }
-        
         let viewSize = view.sizeThatFits(
             allowedSize(from: size)
         )
@@ -85,8 +76,8 @@ struct FrameLayout: Layout {
     
     private func allowedSize(from size: CGSize) -> CGSize {
         CGSize(
-            width: max(min(maxWidth ?? .infinity, size.width), minWidth ?? .zero),
-            height: max(min(maxHeight ?? .infinity, size.height), minHeight ?? .zero)
+            width: width ?? max(min(maxWidth ?? .infinity, size.width), minWidth ?? .zero),
+            height: height ?? max(min(maxHeight ?? .infinity, size.height), minHeight ?? .zero)
         )
     }
 }

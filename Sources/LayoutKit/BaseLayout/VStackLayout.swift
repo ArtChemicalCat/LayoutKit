@@ -81,6 +81,9 @@ public struct VStackLayout: Layout {
 
 public final class Spacer: BaseView {
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        size
+        CGSize(
+            width: size.width == .infinity ? .zero : size.width,
+            height: size.height == .infinity ? .zero : size.height
+        )
     }
 }
