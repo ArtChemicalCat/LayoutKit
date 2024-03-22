@@ -14,7 +14,7 @@ public struct HStackLayout: Layout {
     public func sizeThatFit(size: CGSize, subviews: [UIView]) -> CGSize {
         guard subviews.isEmpty == false else { return .zero }
         
-        let totalSpacing = CGFloat(subviews.count) * spacing - spacing
+        let totalSpacing = CGFloat(subviews.visible().count) * spacing - spacing
         let availableWidth = size.width - totalSpacing
         var usedWidth = CGFloat.zero
         var maxHeight = CGFloat.zero
@@ -34,8 +34,9 @@ public struct HStackLayout: Layout {
                 }
                 
                 sizeTable.value[view] = viewSize
-                
-                usedWidth += viewSize.width
+                if view.isHidden == false {
+                    usedWidth += viewSize.width
+                }
             }
         
         let spacers = subviews.filter { $0 is Spacer }
@@ -63,8 +64,9 @@ public struct HStackLayout: Layout {
                 ),
                 size: viewSize
             )
-            
-            xPosition += viewSize.width + spacing
+            if view.isHidden == false {
+                xPosition += viewSize.width + spacing
+            }
         }
     }
     

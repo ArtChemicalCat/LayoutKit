@@ -23,20 +23,20 @@ public final class LayoutView<L: Layout>: BaseView, WithLayoutPriority {
 
 public extension UIView {
     func layoutPriority(_ priority: Double) -> UIView {
-        LayoutView(WrapLayout(view: self), priority: .init(priority))
+        LayoutView(WrapLayout(self), priority: .init(priority))
             .with {
                 $0.addSubview(self)
             }
     }
 }
 
-public class BaseView: UIView {
+open class BaseView: UIView {
     public init() {
         super.init(frame: .zero)
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError()
     }
 }

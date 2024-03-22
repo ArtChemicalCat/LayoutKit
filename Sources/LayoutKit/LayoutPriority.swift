@@ -11,11 +11,11 @@ public struct LayoutPriority: ExpressibleByFloatLiteral {
         self = .init(value)
     }
     
-    static let min: Self = 0.0
-    static let max: Self = 1.0
-    static let medium: Self = 0.5
-    static let low: Self = 0.25
-    static let hight: Self = 0.75
+    public static let min: Self = 0.0
+    public static let max: Self = 1.0
+    public static let medium: Self = 0.5
+    public static let low: Self = 0.25
+    public static let hight: Self = 0.75
 }
 
 public protocol WithLayoutPriority {

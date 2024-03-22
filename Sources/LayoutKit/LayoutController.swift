@@ -29,7 +29,6 @@ open class Controller: UIViewController {
         let contentViewSize = _contentView?.sizeThatFits(
             safeAreaFrame.size
         )
-        
         _contentView?.frame.size = contentViewSize ?? .zero
         _contentView?.center = CGPoint(x: safeAreaFrame.midX, y: safeAreaFrame.midY)
     }
