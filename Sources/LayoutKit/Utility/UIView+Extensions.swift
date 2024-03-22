@@ -9,7 +9,7 @@ extension UIView {
         return superview?.controllerRootView()
     }
     
-    public func invalidateLayout(animated: Bool = true) {
+    public func remakeLayout(animated: Bool = true) {
         if animated {
             UIView.animate(withDuration: 0.3, delay: .zero, usingSpringWithDamping: 1, initialSpringVelocity: 0.85) {
                 self.controllerRootView()?.setNeedsLayout()
@@ -19,6 +19,12 @@ extension UIView {
             controllerRootView()?.setNeedsLayout()
             controllerRootView()?.layoutIfNeeded()
         }
+    }
+    
+    public func clipped(_ clipped: Bool = true) -> Self {
+        clipsToBounds = clipped
+        return self
+
     }
 }
 

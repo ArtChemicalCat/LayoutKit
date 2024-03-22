@@ -1,11 +1,13 @@
 import UIKit
 
 open class Controller: UIViewController {
-    open var contentView: UIView {
+    open var body: UIView {
         UIView()
     }
     
-    private var _contentView: UIView?
+    private var isIgnoringSafeArea = false
+    
+    private var contentView: UIView?
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -18,18 +20,21 @@ open class Controller: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        let contentView = contentView
-        _contentView = contentView
+        let contentView = body
+        self.contentView = contentView
         view.addSubview(contentView)
     }
     
     open override func viewDidLayoutSubviews() {
-        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
-        let contentViewSize = _contentView?.sizeThatFits(
-            safeAreaFrame.size
+        let layoutFrame = isIgnoringSafeArea ? view.bounds : view.safeAreaLayoutGuide.layoutFrame
+        let contentViewSize = contentView?.sizeThatFits(
+            layoutFrame.size
         )
-        _contentView?.frame.size = contentViewSize ?? .zero
-        _contentView?.center = CGPoint(x: safeAreaFrame.midX, y: safeAreaFrame.midY)
+        contentView?.frame.size = contentViewSize ?? .zero
+        contentView?.center = CGPoint(x: layoutFrame.midX, y: layoutFrame.midY)
+    }
+    
+    public func ignoreSafeArea() {
+        self.isIgnoringSafeArea = true
     }
 }

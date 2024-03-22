@@ -14,7 +14,7 @@ open class ContainerView: BaseView {
     }
     
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        _body.sizeThatFits(size)
+        return WrapLayout(_body).sizeThatFit(size: size, subviews: [_body])
     }
     
     public override func layoutSubviews() {

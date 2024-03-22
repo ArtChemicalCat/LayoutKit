@@ -38,7 +38,7 @@ extension ZLayout {
 
 struct BaseZLayout: ZLayout {
     let alignment: Alignment
-    let sizeTable = Ref([UIView : CGSize]())
+    let sizeTable = Ref([UIView: CGSize]())
     
     func sizeThatFit(size: CGSize, subviews: [UIView]) -> CGSize {
         subviews.forEach { view in

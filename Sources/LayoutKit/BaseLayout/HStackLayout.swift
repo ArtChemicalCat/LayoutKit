@@ -81,13 +81,3 @@ public struct HStackLayout: Layout {
         }
     }
 }
-
-public final class Label: UILabel {
-    public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let sizeThatFit = super.sizeThatFits(size)
-        return CGSize(
-            width: min(sizeThatFit.width, size.width),
-            height: min(sizeThatFit.height, size.height)
-        )
-    }
-}

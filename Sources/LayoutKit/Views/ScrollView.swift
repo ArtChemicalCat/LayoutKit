@@ -12,7 +12,12 @@ public final class ScrollView: UIScrollView {
     
     private var subscriptions = Set<AnyCancellable>()
     
-    public init(_ axis: Axis = .vertical, alignment: Alignment = .center, spacing: CGFloat = 8, @ViewBuilder contentView: () -> [UIView]) {
+    public init(
+        _ axis: Axis = .vertical,
+        alignment: Alignment = .center,
+        spacing: CGFloat = 8,
+        @ViewBuilder contentView: () -> [UIView]
+    ) {
         switch axis {
         case .vertical:
             self.contentView = VStackLayout(alignment: alignment.vertical, spacing: spacing)(contentView)
@@ -23,7 +28,8 @@ public final class ScrollView: UIScrollView {
         super.init(frame: .zero)
         addSubview(self.contentView)
         keyboardDismissMode = .onDrag
-        alwaysBounceVertical = true
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
         
         KeyboardPublisher
             .observeKeyboardFrame()
@@ -35,14 +41,14 @@ public final class ScrollView: UIScrollView {
                 
                 guard frame.height > 0 else {
                     contentInset.bottom = .zero
-                    invalidateLayout()
+                    remakeLayout()
                     return
                 }
                 
                 let converted = convert(self.frame, to: rootView)
                 let overlappedHeight = self.frame.height - (frame.origin.y - converted.origin.y)
                 contentInset.bottom = overlappedHeight
-                invalidateLayout()
+                remakeLayout()
             }
             .store(in: &subscriptions)
     }
@@ -60,8 +66,8 @@ public final class ScrollView: UIScrollView {
         )
         
         return CGSize(
-            width: min(contentSize.width, size.width),
-            height: min(contentSize.height + contentInset.bottom, size.height)
+            width: min(contentSize.width + contentInset.left + contentInset.right, size.width),
+            height: min(contentSize.height + contentInset.bottom + contentInset.top, size.height)
         )
     }
     
