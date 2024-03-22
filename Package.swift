@@ -13,7 +13,7 @@ let package = Package(
             targets: ["LayoutKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ArtChemicalCat/DeclarativeUIKit.git", branch: "main")
+        .package(url: "https://github.com/ArtChemicalCat/DeclarativeUIKit.git", exact: Version(1, 0, 0))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
